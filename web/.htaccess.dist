@@ -1,0 +1,5 @@
+AuthType Basic
+AuthName "Status Board"
+AuthUserFile /home/statusboard/.htpasswd
+
+require valid-user

@@ -1,0 +1,12 @@
+/vendor/
+
+/web/facebook/data.json
+/web/facebook/config.php
+/facebook.txt
+
+/web/harvest/data.json
+/web/harvest/config.php
+/harvest.json
+
+/web/.htaccess
+/.htpasswd
