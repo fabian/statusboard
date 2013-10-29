@@ -2,6 +2,22 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+class HarvestQueryStringAggregator implements Guzzle\Http\QueryAggregator\QueryAggregatorInterface
+{
+    public function aggregate($key, $value, Guzzle\Http\QueryString $query)
+    {
+        $key .= '[]';
+
+        if ($query->isUrlEncoding()) {
+            return array($query->encodeValue($key) => array_map(array($query, 'encodeValue'), $value));
+        } else {
+            return array($key => $value);
+        }
+
+        return $ret;
+    }
+}
+
 $config = require __DIR__ . '/config.php';
 
 $config['server_url'] = 'http://';
@@ -25,19 +41,33 @@ $request = $client->get('applications/' . $config['application_id'] . '/metrics/
     'X-Api-Key' => $config['api_key'],
 ));
 $query = $request->getQuery();
+$query->setAggregator(new HarvestQueryStringAggregator());
 $query->set('from', $from);
-$query->set('names', 'Agent/MetricsReported/count');
+$query->set('names', array('Agent/MetricsReported/count', 'Apdex'));
 $response = $request->send();
 
-$metricsJson = $response->json();
+$metricDataJson = $response->json();
 
-$timeslices = array();
-foreach ($metricsJson['metric_data']['metrics'][0]['timeslices'] as $timesliceJson) {
+$responseTime = array();
+$apdex = array();
+foreach ($metricDataJson['metric_data']['metrics'] as $metricsJson) {
 
-    $timeslices[] = array(
-        'title' => date('H:i', strtotime($timesliceJson['to'] . ' -1day')),
-        'value' => $timesliceJson['values']['average_response_time'],
-    );
+    foreach ($metricsJson['timeslices'] as $timesliceJson) {
+
+        if ($metricsJson['name'] == 'Agent/MetricsReported/count') {
+            $responseTime[] = array(
+                'title' => date('H:i', strtotime($timesliceJson['to'])),
+                'value' => $timesliceJson['values']['average_value'],
+            );
+        }
+
+        if ($metricsJson['name'] == 'Apdex') {
+            $apdex[] = array(
+                'title' => date('H:i', strtotime($timesliceJson['to'])),
+                'value' => $timesliceJson['values']['value'],
+            );
+        }
+    }
 }
 
 $graphJson = array(
@@ -46,14 +76,20 @@ $graphJson = array(
         'type' => 'line',
         'yAxis' => array(
             'units' => array(
-                'suffix' => 'ms',
+                'suffix' => 's',
             ),
         ),
         'refreshEveryNSeconds' => 15,
         'datasequences' => array(
             array(
+                'title' => 'Response',
                 'color' => 'orange',
-                'datapoints' => $timeslices,
+                'datapoints' => $responseTime,
+            ),
+            array(
+                'title' => 'Apdex',
+                'color' => 'blue',
+                'datapoints' => $apdex,
             ),
         ),
     ),
