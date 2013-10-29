@@ -43,28 +43,43 @@ $request = $client->get('applications/' . $config['application_id'] . '/metrics/
 $query = $request->getQuery();
 $query->setAggregator(new HarvestQueryStringAggregator());
 $query->set('from', $from);
-$query->set('names', array('Agent/MetricsReported/count', 'Apdex'));
+$query->set('names', array('Apdex', 'WebTransaction', 'External/all'));
 $response = $request->send();
 
 $metricDataJson = $response->json();
 
 $responseTime = array();
+$requests = array();
 $apdex = array();
+$external = array();
 foreach ($metricDataJson['metric_data']['metrics'] as $metricsJson) {
 
     foreach ($metricsJson['timeslices'] as $timesliceJson) {
 
-        if ($metricsJson['name'] == 'Agent/MetricsReported/count') {
+        if ($metricsJson['name'] == 'WebTransaction') {
             $responseTime[] = array(
                 'title' => date('H:i', strtotime($timesliceJson['to'])),
-                'value' => $timesliceJson['values']['average_value'],
+                'value' => $timesliceJson['values']['average_response_time'] / 1000,
             );
+            /*
+            $requests[] = array(
+                'title' => date('H:i', strtotime($timesliceJson['to'])),
+                'value' => $timesliceJson['values']['call_count'],
+            );
+            */
         }
 
         if ($metricsJson['name'] == 'Apdex') {
             $apdex[] = array(
                 'title' => date('H:i', strtotime($timesliceJson['to'])),
-                'value' => $timesliceJson['values']['value'],
+                'value' => $timesliceJson['values']['value'] * 10,
+            );
+        }
+
+        if ($metricsJson['name'] == 'External/all') {
+            $external[] = array(
+                'title' => date('H:i', strtotime($timesliceJson['to'])),
+                'value' => $timesliceJson['values']['average_response_time'] / 1000,
             );
         }
     }
@@ -75,22 +90,31 @@ $graphJson = array(
         'title' => 'New Relic',
         'type' => 'line',
         'yAxis' => array(
-            'units' => array(
-                'suffix' => 's',
-            ),
         ),
         'refreshEveryNSeconds' => 15,
         'datasequences' => array(
             array(
+                'title' => 'Apdex',
+                'color' => 'purple',
+                'datapoints' => $apdex,
+            ),
+            array(
                 'title' => 'Response',
-                'color' => 'orange',
+                'color' => 'green',
                 'datapoints' => $responseTime,
             ),
             array(
-                'title' => 'Apdex',
-                'color' => 'blue',
-                'datapoints' => $apdex,
+                'title' => 'External',
+                'color' => 'yellow',
+                'datapoints' => $external,
             ),
+            /*
+            array(
+                'title' => 'Requests',
+                'color' => 'orange',
+                'datapoints' => $requests,
+            ),
+            */
         ),
     ),
 );
