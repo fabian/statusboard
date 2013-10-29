@@ -52,8 +52,7 @@ $graphJson = array(
         'refreshEveryNSeconds' => 15,
         'datasequences' => array(
             array(
-                'title' => 'Hours',
-                'color' => 'green',
+                'color' => 'orange',
                 'datapoints' => $timeslices,
             ),
         ),
