@@ -1,10 +1,12 @@
-before_script:
+language: php
+
+script: php -v
+
+after_success:
   - echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
   - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - echo -e "Host farnsworth.ch\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
-after_script:
   - ssh trnsprtc@farnsworth.ch "cd /home/trnsprtc/www/statusboard && git pull --rebase --stat && chmod -R u+rwX,go+rX,go-w ."
 
 env:
