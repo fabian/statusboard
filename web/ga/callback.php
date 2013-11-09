@@ -14,8 +14,13 @@ if ($code) {
         'grant_type' => 'authorization_code',
     ));
     $response = $request->send();
-    file_put_contents($config['token_file'], $response->getBody());
+    $json = $response->json();
 
+    if (empty($json['refresh_token'])) {
+        file_put_contents($config['token_file'], $response->getBody());
+    } else {
+        file_put_contents($config['refresh_token_file'], $response->getBody());
+    }
 }
 
 header('Location: ' . dirname($_SERVER['SCRIPT_NAME']));

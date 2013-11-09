@@ -14,6 +14,7 @@
 /web/ga/data.json
 /web/ga/config.php
 /ga.json
+/ga_refresh.json
 
 /web/.htaccess
 /.htpasswd

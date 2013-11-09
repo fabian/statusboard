@@ -8,4 +8,5 @@ return array(
     'client_id' => '',
     'client_secret' => '',
     'token_file' => __DIR__ . '/../../ga.json',
+    'refresh_token_file' => __DIR__ . '/../../ga_refresh.json',
 );
