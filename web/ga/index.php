@@ -36,7 +36,7 @@ if ($json) {
                 'title' => date('j.n.', strtotime($row[0])),
                 'value' => $row[1],
             );
-            $pageViews = array(
+            $pageViews[] = array(
                 'title' => date('j.n.', strtotime($row[0])),
                 'value' => $row[2],
             );
