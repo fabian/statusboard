@@ -34,15 +34,15 @@ if ($json) {
         $pageViews = array();
         foreach ($dataJson['rows'] as $row) {
             $visitors[] = array(
-                'title' => date('j.n.', strtotime($row[0])),
+                'title' => date('j. M', strtotime($row[0])),
                 'value' => $row[1],
             );
             $newVisitors[] = array(
-                'title' => date('j.n.', strtotime($row[0])),
+                'title' => date('j. M', strtotime($row[0])),
                 'value' => $row[2],
             );
             $pageViews[] = array(
-                'title' => date('j.n.', strtotime($row[0])),
+                'title' => date('j. M', strtotime($row[0])),
                 'value' => $row[3],
             );
         }
