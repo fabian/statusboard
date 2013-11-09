@@ -13,37 +13,45 @@ if ($json) {
 
         $dataSequences = array();
 
-        foreach ($config['views'] as $viewId => $color) {
+        $params = array(
+            'ids' => 'ga:' . $config['view_id'],
+            'start-date' => date('Y-m-d', strtotime('-1 month')),
+            'end-date' => date('Y-m-d', strtotime('today')),
+            'metrics' => 'ga:visits,ga:pageviews',
+            'dimensions' => 'ga:date',
+        );
 
-            $params = array(
-                'ids' => 'ga:' . $viewId,
-                'start-date' => date('Y-m-d', strtotime('-1 month')),
-                'end-date' => date('Y-m-d', strtotime('today')),
-                'metrics' => 'ga:visits',
-                'dimensions' => 'ga:date',
+        $request = $client->get('data/ga', array(), array('query' => $params));
+        $request->setHeader('Authorization', 'Bearer ' . $json['access_token']);
+
+        $response = $request->send();
+
+        $dataJson = $response->json();
+        var_dump($dataJson);
+        $success = true;
+
+        $visits = array();
+        $pageViews = array();
+        foreach ($dataJson['rows'] as $row) {
+            $visits[] = array(
+                'title' => date('j.n.', strtotime($row[0])),
+                'value' => $row[1],
             );
-
-            $request = $client->get('data/ga', array(), array('query' => $params));
-            $request->setHeader('Authorization', 'Bearer ' . $json['access_token']);
-
-            $response = $request->send();
-
-            $dataJson = $response->json();
-            $success = true;
-
-            $visits = array();
-            foreach ($dataJson['rows'] as $row) {
-                $visits[] = array(
-                    'title' => date('j.n.', strtotime($row[0])),
-                    'value' => $row[1],
-                );
-            }
-            $dataSequences[] = array(
-                'title' => $dataJson['profileInfo']['profileName'],
-                'color' => $color,
-                'datapoints' => $visits,
+            $pageViews = array(
+                'title' => date('j.n.', strtotime($row[0])),
+                'value' => $row[2],
             );
         }
+        $dataSequences[] = array(
+            'title' => 'Visitors',
+            'color' => 'green',
+            'datapoints' => $visits,
+        );
+        $dataSequences[] = array(
+            'title' => 'Page Views',
+            'color' => 'yellow',
+            'datapoints' => $pageViews,
+        );
 
         $graphJson = array(
             'graph' => array(
@@ -70,7 +78,6 @@ $authorizeQuery = array(
     'client_id' => $config['client_id'],
     'redirect_uri' => $config['redirect_uri'],
     'access_type' => 'offline',
-    'approval_prompt' => 'force',
     'response_type' => 'code',
 );
 $authorizeUrl = $config['auth_url'] . '/auth?' . http_build_query($authorizeQuery);
