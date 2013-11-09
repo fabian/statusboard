@@ -36,11 +36,9 @@ if ($json) {
                 $visits[date('j.n.', strtotime($row[0]))] = $row[1];
             }
             $dataSequences[] = array(
-                array(
-                    'title' => $dataJson['profileInfo']['profileName'],
-                    'color' => 'green',
-                    'datapoints' => $visits,
-                ),
+                'title' => $dataJson['profileInfo']['profileName'],
+                'color' => 'green',
+                'datapoints' => $visits,
             );
         }
 
