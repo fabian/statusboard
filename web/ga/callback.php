@@ -16,9 +16,9 @@ if ($code) {
     $response = $request->send();
     $json = $response->json();
 
-    if (empty($json['refresh_token'])) {
-        file_put_contents($config['token_file'], $response->getBody());
-    } else {
+    file_put_contents($config['token_file'], $response->getBody());
+
+    if (!empty($json['refresh_token'])) {
         file_put_contents($config['refresh_token_file'], $response->getBody());
     }
 }
