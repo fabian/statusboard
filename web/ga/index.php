@@ -33,7 +33,10 @@ if ($json) {
 
             $visits = array();
             foreach ($dataJson['rows'] as $row) {
-                $visits[date('j.n.', strtotime($row[0]))] = $row[1];
+                $visits[] = array(
+                    'title' => date('j.n.', strtotime($row[0])),
+                    'value' => $row[1],
+                );
             }
             $dataSequences[] = array(
                 'title' => $dataJson['profileInfo']['profileName'],
