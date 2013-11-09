@@ -11,6 +11,10 @@
 /web/newrelic/data.json
 /web/newrelic/config.php
 
+/web/ga/data.json
+/web/ga/config.php
+/ga.json
+
 /web/.htaccess
 /.htpasswd
 
