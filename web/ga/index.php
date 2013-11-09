@@ -17,7 +17,7 @@ if ($json) {
             'ids' => 'ga:' . $config['view_id'],
             'start-date' => date('Y-m-d', strtotime('-1 month')),
             'end-date' => date('Y-m-d', strtotime('today')),
-            'metrics' => 'ga:visits,ga:pageviews',
+            'metrics' => 'ga:visits,ga:newVisits,ga:pageviews',
             'dimensions' => 'ga:date',
         );
 
@@ -29,26 +29,36 @@ if ($json) {
         $dataJson = $response->json();
         $success = true;
 
-        $visits = array();
+        $visitors = array();
+        $newVisitors = array();
         $pageViews = array();
         foreach ($dataJson['rows'] as $row) {
-            $visits[] = array(
+            $visitors[] = array(
                 'title' => date('j.n.', strtotime($row[0])),
                 'value' => $row[1],
             );
-            $pageViews[] = array(
+            $newVisitors[] = array(
                 'title' => date('j.n.', strtotime($row[0])),
                 'value' => $row[2],
+            );
+            $pageViews[] = array(
+                'title' => date('j.n.', strtotime($row[0])),
+                'value' => $row[3],
             );
         }
         $dataSequences[] = array(
             'title' => 'Visitors',
+            'color' => 'yellow',
+            'datapoints' => $visitors,
+        );
+        $dataSequences[] = array(
+            'title' => 'New Visitors',
             'color' => 'green',
-            'datapoints' => $visits,
+            'datapoints' => $newVisitors,
         );
         $dataSequences[] = array(
             'title' => 'Page Views',
-            'color' => 'yellow',
+            'color' => 'purple',
             'datapoints' => $pageViews,
         );
 
