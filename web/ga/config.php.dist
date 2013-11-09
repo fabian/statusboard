@@ -5,7 +5,7 @@ return array(
     'base_url' => 'https://www.googleapis.com/analytics/v3',
     'scope' => 'https://www.googleapis.com/auth/analytics.readonly',
     'views' => array(
-        '',
+        'YOUR_VIEW_ID' => 'green',
     ),
     'client_id' => '',
     'client_secret' => '',

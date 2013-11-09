@@ -13,7 +13,7 @@ if ($json) {
 
         $dataSequences = array();
 
-        foreach ($config['views'] as $viewId) {
+        foreach ($config['views'] as $viewId => $color) {
 
             $params = array(
                 'ids' => 'ga:' . $viewId,
@@ -40,7 +40,7 @@ if ($json) {
             }
             $dataSequences[] = array(
                 'title' => $dataJson['profileInfo']['profileName'],
-                'color' => 'green',
+                'color' => $color,
                 'datapoints' => $visits,
             );
         }
