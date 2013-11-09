@@ -15,7 +15,7 @@ if (isset($_SERVER['PHP_AUTH_USER'])) {
 }
 $server = $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 
-$config['server_url'] = 'http://' . $auth . $server . '/callback.php';
+$config['server_url'] = 'http://' . $auth . $server;
 $config['redirect_uri'] = 'http://' . $server . '/callback.php';
 
 $authClient = new Guzzle\Http\Client($config['auth_url']);
