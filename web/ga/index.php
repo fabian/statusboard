@@ -27,7 +27,6 @@ if ($json) {
         $response = $request->send();
 
         $dataJson = $response->json();
-        var_dump($dataJson);
         $success = true;
 
         $visits = array();
