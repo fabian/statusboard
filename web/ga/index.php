@@ -77,6 +77,7 @@ $authorizeQuery = array(
     'client_id' => $config['client_id'],
     'redirect_uri' => $config['redirect_uri'],
     'access_type' => 'offline',
+    'approval_prompt' => 'force',
     'response_type' => 'code',
 );
 $authorizeUrl = $config['auth_url'] . '/auth?' . http_build_query($authorizeQuery);
