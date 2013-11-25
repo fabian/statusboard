@@ -25,7 +25,7 @@ if ($json) {
         $success = true;
 
         $total = 0;
-        $hours = array();
+        $hours = array(0 => 0);
         foreach ($entriesJson as $entryJson) {
 
             $dayEntry = $entryJson['day_entry'];
@@ -54,6 +54,10 @@ if ($json) {
                         'color' => 'green',
                         'datapoints' => array(
                             array(
+                                'title' => 'Sun',
+                                'value' => isset($hours[0]) ? $hours[0] : $total,
+                            ),
+                            array(
                                 'title' => 'Mon',
                                 'value' => isset($hours[1]) ? $hours[1] : $total,
                             ),
@@ -73,12 +77,20 @@ if ($json) {
                                 'title' => 'Fri',
                                 'value' => isset($hours[5]) ? $hours[5] : $total,
                             ),
+                            array(
+                                'title' => 'Sat',
+                                'value' => isset($hours[6]) ? $hours[6] : $total,
+                            ),
                         ),
                     ),
                     array(
                         'title' => 'Required',
                         'color' => 'lightGray',
                         'datapoints' => array(
+                            array(
+                                'title' => 'Sun',
+                                'value' => $config['weekly_hours'] / 5 * 0,
+                            ),
                             array(
                                 'title' => 'Mon',
                                 'value' => $config['weekly_hours'] / 5 * 1,
@@ -98,6 +110,10 @@ if ($json) {
                             array(
                                 'title' => 'Fri',
                                 'value' => $config['weekly_hours'] / 5 * 5,
+                            ),
+                            array(
+                                'title' => 'Sat',
+                                'value' => $config['weekly_hours'] / 5 * 6,
                             ),
                         ),
                     ),
