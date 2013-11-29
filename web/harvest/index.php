@@ -50,7 +50,7 @@ if ($json) {
                 'refreshEveryNSeconds' => 15,
                 'datasequences' => array(
                     array(
-                        'title' => 'Hours',
+                        'title' => ' Hours',
                         'color' => 'green',
                         'datapoints' => array(
                             array(
@@ -85,7 +85,7 @@ if ($json) {
                     ),
                     array(
                         'title' => 'Required',
-                        'color' => 'lightGray',
+                        'color' => 'mediumGray',
                         'datapoints' => array(
                             array(
                                 'title' => 'Sun',
