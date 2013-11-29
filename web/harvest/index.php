@@ -113,7 +113,7 @@ if ($json) {
                             ),
                             array(
                                 'title' => 'Sat',
-                                'value' => $config['weekly_hours'] / 5 * 6,
+                                'value' => $config['weekly_hours'] / 5 * 5,
                             ),
                         ),
                     ),
