@@ -9,8 +9,8 @@ if ($json) {
 
     try {
 
-        $from = date('Ymd', strtotime('last monday', strtotime('tomorrow')));
-        $to = date('Ymd', strtotime('last monday +5 days', strtotime('tomorrow')));
+        $from = date('Ymd', strtotime('last sunday', strtotime('tomorrow')));
+        $to = date('Ymd', strtotime('last sunday +5 days', strtotime('tomorrow')));
 
         $request = $client->get('projects/' . $config['project_id'] . '/entries', array(
             'Accept' => 'application/json',
