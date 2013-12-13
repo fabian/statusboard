@@ -24,13 +24,6 @@ if ($json) {
     }
 }
 
-$authorizeQuery = array(
-    'client_id' => $config['client_id'],
-    'redirect_uri' => $config['redirect_uri'],
-    'response_type' => 'code',
-);
-$authorizeUrl = $config['base_url'] . '/oauth2/authorize?' . http_build_query($authorizeQuery);
-
 ?>
 
 <?php if ($success): ?>
