@@ -92,10 +92,6 @@ $authorizeQuery = array(
 );
 $authorizeUrl = $config['auth_url'] . '/auth?' . http_build_query($authorizeQuery);
 
-?>
-
-<?php if ($success): ?>
-    <a href="panicboard://?url=<?php echo htmlentities(urlencode($grapUrl)); ?>&panel=graph&sourceDisplayName=Google%20Analytics">Add to Status Board</a>
-<?php else: ?>
-    <a href="<?php echo htmlentities($authorizeUrl); ?>">Login with Google</a>
-<?php endif; ?>
+if (!$success) {
+    echo '<a href="' . htmlentities($authorizeUrl) . '">Login with Google</a>' . "\n";
+}

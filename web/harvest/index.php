@@ -137,10 +137,6 @@ $authorizeUrl = $config['base_url'] . '/oauth2/authorize?' . http_build_query($a
 
 $grapUrl = $config['server_url'] . '/data.json';
 
-?>
-
-<?php if ($success): ?>
-    <a href="panicboard://?url=<?php echo htmlentities(urlencode($grapUrl)); ?>&panel=graph&sourceDisplayName=Harvest">Add to Status Board</a>
-<?php else: ?>
-    <a href="<?php echo htmlentities($authorizeUrl); ?>">Login with Harvest</a>
-<?php endif; ?>
+if (!$success) {
+    echo '<a href="' . htmlentities($authorizeUrl) . '">Login with Harvest</a>' . "\n";
+}

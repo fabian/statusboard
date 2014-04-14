@@ -24,10 +24,6 @@ if ($json) {
     }
 }
 
-?>
-
-<?php if ($success): ?>
-    Token refreshed
-<?php else: ?>
-    Failed to refresh token
-<?php endif; ?>
+if (!$success) {
+    echo "Failed to refresh token\n";
+}

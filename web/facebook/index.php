@@ -85,10 +85,6 @@ $authorizeUrl = 'https://www.facebook.com/dialog/oauth?' . http_build_query($aut
 
 $grapUrl = $config['server_url'] . '/data.json';
 
-?>
-
-<?php if ($success): ?>
-    <a href="panicboard://?url=<?php echo htmlentities(urlencode($grapUrl)); ?>&panel=graph&sourceDisplayName=Facebook">Add to Status Board</a>
-<?php else: ?>
-    <a href="<?php echo htmlentities($authorizeUrl); ?>">Login with Facebook</a>
-<?php endif; ?>
+if (!$success) {
+    echo '<a href="' . htmlentities($authorizeUrl) . '">Login with Facebook</a>' . "\n";
+}
