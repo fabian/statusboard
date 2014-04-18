@@ -77,6 +77,7 @@ if ($json) {
 
     } catch (Guzzle\Http\Exception\RequestException $e) {
         // update failed
+        echo $e->getResponse()->getBody(true);
     }
 }
 
