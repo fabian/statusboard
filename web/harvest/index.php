@@ -25,7 +25,10 @@ if ($json) {
         $success = true;
 
         $total = 0;
-        $hours = array(0 => 0);
+        $hours = array();
+        for ($i = 0; $i < date('w'); $i++) {
+            $hours[$i] = 0;
+        }
         foreach ($entriesJson as $entryJson) {
 
             $dayEntry = $entryJson['day_entry'];
