@@ -26,9 +26,6 @@ if ($json) {
 
         $total = 0;
         $hours = array();
-        for ($i = 0; $i < date('w'); $i++) {
-            $hours[$i] = 0;
-        }
         foreach ($entriesJson as $entryJson) {
 
             $dayEntry = $entryJson['day_entry'];
@@ -41,6 +38,16 @@ if ($json) {
 
             $weekday = date('w', strtotime($dayEntry['spent_at']));
             $hours[$weekday] = $total;
+        }
+
+        $previous = 0;
+        for ($i = 0; $i < 7; $i++) {
+
+            if (isset($hours[$i])) {
+                $previous = $hours[$i];
+            } else {
+                $hours[$i] = $previous;
+            }
         }
 
         $graphJson = array(
@@ -58,31 +65,31 @@ if ($json) {
                         'datapoints' => array(
                             array(
                                 'title' => 'Sun',
-                                'value' => isset($hours[0]) ? $hours[0] : $total,
+                                'value' => $hours[0],
                             ),
                             array(
                                 'title' => 'Mon',
-                                'value' => isset($hours[1]) ? $hours[1] : $total,
+                                'value' => $hours[1],
                             ),
                             array(
                                 'title' => 'Tue',
-                                'value' => isset($hours[2]) ? $hours[2] : $total,
+                                'value' => $hours[2],
                             ),
                             array(
                                 'title' => 'Wed',
-                                'value' => isset($hours[3]) ? $hours[3] : $total,
+                                'value' => $hours[3],
                             ),
                             array(
                                 'title' => 'Thu',
-                                'value' => isset($hours[4]) ? $hours[4] : $total,
+                                'value' => $hours[4],
                             ),
                             array(
                                 'title' => 'Fri',
-                                'value' => isset($hours[5]) ? $hours[5] : $total,
+                                'value' => $hours[5],
                             ),
                             array(
                                 'title' => 'Sat',
-                                'value' => isset($hours[6]) ? $hours[6] : $total,
+                                'value' => $hours[6],
                             ),
                         ),
                     ),
