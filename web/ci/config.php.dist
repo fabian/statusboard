@@ -1,0 +1,5 @@
+<?php
+
+return array(
+    'codeship_api_key' => '',
+);

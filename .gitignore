@@ -16,6 +16,8 @@
 /ga.json
 /ga_refresh.json
 
+/web/ci/config.php
+
 /web/.htaccess
 /.htpasswd
 
