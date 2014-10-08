@@ -2,4 +2,8 @@
 
 return array(
     'codeship_api_key' => '',
+    'cc_urls' => array(
+        'https://api.travis-ci.org/repos/symfony.xml',
+        'https://api.travis-ci.org/repos/symfony/symfony/cc.xml',
+    ),
 );
