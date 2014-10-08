@@ -25,21 +25,24 @@ foreach ($json['projects'] as $project) {
 
     foreach ($project['builds'] as $build) {
 
-        if ($lastBuildStatus === 'Unknown') {
+        if ($build['branch'] == 'master') {
 
-            if ($build['status'] == 'success') {
-                $lastBuildStatus = 'Success';
-                $lastBuildLabel = $build['id'];
+            if ($lastBuildStatus === 'Unknown') {
+
+                if ($build['status'] == 'success') {
+                    $lastBuildStatus = 'Success';
+                    $lastBuildLabel = $build['id'];
+                }
+
+                if ($build['status'] == 'error') {
+                    $lastBuildStatus = 'Failure';
+                    $lastBuildLabel = $build['id'];
+                }
             }
 
-            if ($build['status'] == 'error') {
-                $lastBuildStatus = 'Failure';
-                $lastBuildLabel = $build['id'];
+            if ($build['status'] == 'testing') {
+                $activity = 'Building';
             }
-        }
-
-        if ($build['status'] == 'testing') {
-            $activity = 'Building';
         }
     }
 
