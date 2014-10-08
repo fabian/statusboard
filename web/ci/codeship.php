@@ -13,6 +13,8 @@ $response = $request->send();
 
 $json = $response->json();
 
+$branch = isset($_GET['branch']) ? $_GET['branch'] : 'master';
+
 $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Projects />');
 
 foreach ($json['projects'] as $project) {
@@ -25,7 +27,7 @@ foreach ($json['projects'] as $project) {
 
     foreach ($project['builds'] as $build) {
 
-        if ($build['branch'] == 'master') {
+        if ($build['branch'] == $branch) {
 
             if ($lastBuildStatus === 'Unknown') {
 
