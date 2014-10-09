@@ -21,13 +21,17 @@ foreach ($json['projects'] as $project) {
 
     $name = $project['repository_name'];
     $activity = 'Sleeping';
-    $lastBuildStatus = 'Unknown';
+    $lastBuildStatus = null;
     $lastBuildLabel = null;
     $webUrl = 'https://www.codeship.io/projects/' . $project['id'];
 
     foreach ($project['builds'] as $build) {
 
         if ($build['branch'] == $branch) {
+
+            if ($lastBuildStatus === null) {
+                $lastBuildStatus = 'Unknown';
+            }
 
             if ($lastBuildStatus === 'Unknown') {
 
@@ -48,13 +52,16 @@ foreach ($json['projects'] as $project) {
         }
     }
 
-    $projectXML = $xml->addChild('Project');
-    $projectXML->addAttribute('name', $name);
-    $projectXML->addAttribute('activity', $activity);
-    $projectXML->addAttribute('lastBuildStatus', $lastBuildStatus);
-    $projectXML->addAttribute('lastBuildLabel', $lastBuildLabel);
-    $projectXML->addAttribute('lastBuildTime', date('c'));
-    $projectXML->addAttribute('webUrl', $webUrl);
+    if ($lastBuildStatus !== null) {
+
+        $projectXML = $xml->addChild('Project');
+        $projectXML->addAttribute('name', $name);
+        $projectXML->addAttribute('activity', $activity);
+        $projectXML->addAttribute('lastBuildStatus', $lastBuildStatus);
+        $projectXML->addAttribute('lastBuildLabel', $lastBuildLabel);
+        $projectXML->addAttribute('lastBuildTime', date('c'));
+        $projectXML->addAttribute('webUrl', $webUrl);
+    }
 }
 
 header('Content-type: application/xml;charset=utf-8');
