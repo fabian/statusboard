@@ -25,6 +25,10 @@ foreach ($json['projects'] as $project) {
     $lastBuildLabel = null;
     $webUrl = 'https://www.codeship.io/projects/' . $project['id'];
 
+    if ($branch != 'master') {
+        $name .= ' ' . $branch;
+    }
+
     foreach ($project['builds'] as $build) {
 
         if ($build['branch'] == $branch) {
