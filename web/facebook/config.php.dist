@@ -4,5 +4,5 @@ return array(
     'app_id' => '',
     'app_secret' => '',
     'page_id' => '',
-    'token_file' => __DIR__ . '/../../facebook.txt',
+    'token_file' => __DIR__ . '/../../tokens/facebook.txt',
 );

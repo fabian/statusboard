@@ -2,24 +2,22 @@
 
 /web/facebook/data.json
 /web/facebook/config.php
-/facebook.txt
 
 /web/harvest/data.json
 /web/harvest/config.php
-/harvest.json
 
 /web/newrelic/data.json
 /web/newrelic/config.php
 
 /web/ga/data.json
 /web/ga/config.php
-/ga.json
-/ga_refresh.json
 
 /web/ci/config.php
 
 /web/.htaccess
 /.htpasswd
+
+/tokens/
 
 /table_tutorial.pdf
 /graph_tutorial.pdf

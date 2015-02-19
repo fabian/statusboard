@@ -6,5 +6,5 @@ return array(
     'client_secret' => '',
     'project_id' => '',
     'weekly_hours' => 40,
-    'token_file' => __DIR__ . '/../../harvest.json',
+    'token_file' => __DIR__ . '/../../tokens/harvest.json',
 );

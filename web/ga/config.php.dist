@@ -7,6 +7,6 @@ return array(
     'view_id' => '',
     'client_id' => '',
     'client_secret' => '',
-    'token_file' => __DIR__ . '/../../ga.json',
-    'refresh_token_file' => __DIR__ . '/../../ga_refresh.json',
+    'token_file' => __DIR__ . '/../../tokens/ga.json',
+    'refresh_token_file' => __DIR__ . '/../../tokens/ga_refresh.json',
 );
