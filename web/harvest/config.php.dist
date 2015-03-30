@@ -4,7 +4,9 @@ return array(
     'base_url' => 'https://COMPANYNAME.harvestapp.com',
     'client_id' => '',
     'client_secret' => '',
-    'project_id' => '',
+    'project_ids' => array(
+        '',
+    ),
     'weekly_hours' => 40,
     'token_file' => __DIR__ . '/../../tokens/harvest.json',
 );

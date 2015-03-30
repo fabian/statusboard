@@ -12,42 +12,46 @@ if ($json) {
         $from = date('Ymd', strtotime('last sunday', strtotime('tomorrow')));
         $to = date('Ymd', strtotime('last sunday +5 days', strtotime('tomorrow')));
 
-        $request = $client->get('projects/' . $config['project_id'] . '/entries', array(
-            'Accept' => 'application/json',
-        ));
-        $query = $request->getQuery();
-        $query->set('from', $from);
-        $query->set('to', $to);
-        $query->set('access_token', $json['access_token']);
-        $response = $request->send();
+        foreach ($config['project_ids'] as $projectId) {
 
-        $entriesJson = $response->json();
-        $success = true;
+            $request = $client->get('projects/' . $projectId . '/entries', array(
+                'Accept' => 'application/json',
+            ));
+            $query = $request->getQuery();
+            $query->set('from', $from);
+            $query->set('to', $to);
+            $query->set('access_token', $json['access_token']);
+            $response = $request->send();
 
-        $total = 0;
-        $hours = array();
-        foreach ($entriesJson as $entryJson) {
+            $entriesJson = $response->json();
+            $success = true;
 
-            $dayEntry = $entryJson['day_entry'];
+            $hours = array();
+            foreach ($entriesJson as $entryJson) {
 
-            if (isset($dayEntry['hours_with_timer'])) {
-                $total += $dayEntry['hours_with_timer'];
-            } else {
-                $total += $dayEntry['hours'];
+                $dayEntry = $entryJson['day_entry'];
+
+                if (isset($dayEntry['hours_with_timer'])) {
+                    $entryHours = $dayEntry['hours_with_timer'];
+                } else {
+                    $entryHours = $dayEntry['hours'];
+                }
+
+                $weekday = date('w', strtotime($dayEntry['spent_at']));
+                if (!isset($hours[$weekday])) {
+                    $hours[$weekday] = 0;
+                }
+                $hours[$weekday] += $entryHours;
             }
-
-            $weekday = date('w', strtotime($dayEntry['spent_at']));
-            $hours[$weekday] = $total;
         }
 
         $previous = 0;
         for ($i = 0; $i < 7; $i++) {
 
             if (isset($hours[$i])) {
-                $previous = $hours[$i];
-            } else {
-                $hours[$i] = $previous;
+                $previous += $hours[$i];
             }
+            $hours[$i] = $previous;
         }
 
         $graphJson = array(
