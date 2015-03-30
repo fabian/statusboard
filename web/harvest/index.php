@@ -12,6 +12,7 @@ if ($json) {
         $from = date('Ymd', strtotime('last sunday', strtotime('tomorrow')));
         $to = date('Ymd', strtotime('last sunday +5 days', strtotime('tomorrow')));
 
+        $hours = array();
         foreach ($config['project_ids'] as $projectId) {
 
             $request = $client->get('projects/' . $projectId . '/entries', array(
@@ -26,7 +27,6 @@ if ($json) {
             $entriesJson = $response->json();
             $success = true;
 
-            $hours = array();
             foreach ($entriesJson as $entryJson) {
 
                 $dayEntry = $entryJson['day_entry'];
