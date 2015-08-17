@@ -9,6 +9,6 @@
     </tr>
     <tr>
         <td>Abu Dhabi</td>
-        <td style="width: 160px"><?php $date = strtotime('2017-10-17'); echo ceil(($date - time())/60/60/24); ?> days</td>
+        <td style="width: 160px"><?php $date = strtotime('2017-10-14'); echo ceil(($date - time())/60/60/24); ?> days</td>
     </tr>
 </table>
