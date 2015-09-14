@@ -13,6 +13,6 @@
     </tr>
     <tr>
         <td>Kazan</td>
-        <td style="width: 160px"><?php $date = strtotime('2017-08-18'); echo ceil(($date - time())/60/60/24); ?> days</td>
+        <td style="width: 160px"><?php $date = strtotime('2019-08-18'); echo ceil(($date - time())/60/60/24); ?> days</td>
     </tr>
 </table>
