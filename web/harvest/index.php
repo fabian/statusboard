@@ -15,16 +15,13 @@ if ($json) {
         $hours = array();
         foreach ($config['project_ids'] as $projectId) {
 
-            $request = $client->get('projects/' . $projectId . '/entries', array(
-                'Accept' => 'application/json',
-            ));
-            $query = $request->getQuery();
-            $query->set('from', $from);
-            $query->set('to', $to);
-            $query->set('access_token', $json['access_token']);
-            $response = $request->send();
+            $response = $client->get('projects/' . $projectId . '/entries', ['headers' => ['Accept' => 'application/json'], 'query' => [
+                'from' => $from,
+                'to' => $to,
+                'access_token' => $json['access_token'],
+            ]]);
 
-            $entriesJson = $response->json();
+            $entriesJson = json_decode($response->getBody(), true);
             $success = true;
 
             foreach ($entriesJson as $entryJson) {
@@ -137,7 +134,7 @@ if ($json) {
 
         file_put_contents(__DIR__ . '/data.json', json_encode($graphJson));
 
-    } catch (Guzzle\Http\Exception\RequestException $e) {
+    } catch (GuzzleHttp\Exception\RequestException $e) {
         // update failed
         echo $e->getResponse()->getBody(true);
     }

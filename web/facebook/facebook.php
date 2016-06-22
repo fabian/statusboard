@@ -18,4 +18,4 @@ $config['server_url'] .= dirname($_SERVER['SCRIPT_NAME']);
 
 $config['redirect_uri'] = $config['server_url'] . '/callback.php';
 
-$client = new Guzzle\Http\Client('https://graph.facebook.com');
+$client = new GuzzleHttp\Client(['base_uri' => 'https://graph.facebook.com']);

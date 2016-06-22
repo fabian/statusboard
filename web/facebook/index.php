@@ -11,13 +11,12 @@ if ($accessToken) {
 
         $since = strtotime('-7days');
 
-        $request = $client->get($config['page_id'] . '/insights/page_fan_adds');
-        $query = $request->getQuery();
-        $query->set('since', $since);
-        $query->set('access_token', $accessToken);
-        $response = $request->send();
+        $response = $client->get($config['page_id'] . '/insights/page_fan_adds', ['query' => [
+            'since' => $since,
+            'access_token' => $accessToken,
+        ]]);
 
-        $dataJson = $response->json();
+        $dataJson = json_decode($response->getBody(), true);
 
         $likes = array();
         foreach ($dataJson['data'][0]['values'] as $valueJson) {
@@ -28,13 +27,12 @@ if ($accessToken) {
             );
         }
 
-        $request = $client->get($config['page_id'] . '/insights/page_fan_removes');
-        $query = $request->getQuery();
-        $query->set('since', $since);
-        $query->set('access_token', $accessToken);
-        $response = $request->send();
+        $response = $client->get($config['page_id'] . '/insights/page_fan_removes', ['query' => [
+            'since' => $since,
+            'access_token' => $accessToken,
+        ]]);
 
-        $dataJson = $response->json();
+        $dataJson = json_decode($response->getBody(), true);
         $success = true;
 
         $unlikes = array();
@@ -71,7 +69,7 @@ if ($accessToken) {
 
         file_put_contents(__DIR__ . '/data.json', json_encode($graphJson));
 
-    } catch (Guzzle\Http\Exception\RequestException $e) {
+    } catch (GuzzleHttp\Exception\RequestException $e) {
         // update failed
     }
 }

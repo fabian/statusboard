@@ -6,34 +6,30 @@ $code = isset($_GET['code']) ? $_GET['code'] : '';
 
 if ($code) {
 
-    $request = $client->post('oauth/access_token', null, array (
+    $response = $client->post('oauth/access_token', ['form_params' => [
         'code' => $code,
         'client_id' => $config['app_id'],
         'client_secret' => $config['app_secret'],
         'redirect_uri' => $config['redirect_uri'],
-    ));
-    $response = $request->send();
+    ]]);
 
     parse_str($response->getBody(), $array);
 
-    $request = $client->post('oauth/access_token', null, array (
+    $response = $client->post('oauth/access_token', ['form_params' => [
         'grant_type' => 'fb_exchange_token',
         'client_id' => $config['app_id'],
         'client_secret' => $config['app_secret'],
         'fb_exchange_token' => $array['access_token'],
-    ));
-    $response = $request->send();
+    ]]);
 
     parse_str($response->getBody(), $array);
     $accessToken = $array['access_token'];
 
-    $request = $client->get('me/accounts');
-    $query = $request->getQuery();
-    $query->set('access_token', $accessToken);
+    $response = $client->get('me/accounts', ['query' => [
+        'access_token' => $accessToken,
+    ]]);
 
-    $response = $request->send();
-
-    $json = $response->json();
+    $json = json_decode($response->getBody(), true);
 
     foreach ($json['data'] as $account) {
         if ($account['id'] == $config['page_id']){

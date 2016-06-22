@@ -6,14 +6,14 @@ $code = isset($_GET['code']) ? $_GET['code'] : '';
 
 if ($code) {
 
-    $request = $client->post('oauth2/token', null, array (
+    $response = $client->post('oauth2/token', ['form_params' => [
         'code' => $code,
         'client_id' => $config['client_id'],
         'client_secret' => $config['client_secret'],
         'redirect_uri' => $config['redirect_uri'],
         'grant_type' => 'authorization_code',
-    ));
-    $response = $request->send();
+    ]]);
+
     file_put_contents($config['token_file'], $response->getBody());
 
 }

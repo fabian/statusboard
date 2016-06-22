@@ -18,4 +18,4 @@ $config['server_url'] .= dirname($_SERVER['SCRIPT_NAME']);
 
 $config['redirect_uri'] = $config['server_url'] . '/callback.php';
 
-$client = new Guzzle\Http\Client($config['base_url']);
+$client = new GuzzleHttp\Client(['base_uri' => $config['base_url']]);

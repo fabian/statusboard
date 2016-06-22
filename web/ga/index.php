@@ -21,12 +21,9 @@ if ($json) {
             'dimensions' => 'ga:date',
         );
 
-        $request = $client->get('data/ga', array(), array('query' => $params));
-        $request->setHeader('Authorization', 'Bearer ' . $json['access_token']);
+        $response = $client->get('data/ga', ['query' => $params, 'headers' => ['Authorization' => 'Bearer ' . $json['access_token']]]);
 
-        $response = $request->send();
-
-        $dataJson = $response->json();
+        $dataJson = json_decode($response->getBody(), true);
         $success = true;
 
         $visitors = array();
@@ -75,7 +72,7 @@ if ($json) {
 
         file_put_contents(__DIR__ . '/data.json', json_encode($graphJson));
 
-    } catch (Guzzle\Http\Exception\RequestException $e) {
+    } catch (GuzzleHttp\Exception\RequestException $e) {
         // update failed
         echo $e->getResponse()->getBody(true);
     }
@@ -91,7 +88,7 @@ $authorizeQuery = array(
     'approval_prompt' => 'force',
     'response_type' => 'code',
 );
-$authorizeUrl = $config['auth_url'] . '/auth?' . http_build_query($authorizeQuery);
+$authorizeUrl = $config['auth_url'] . 'auth?' . http_build_query($authorizeQuery);
 
 if (!$success) {
     echo '<a href="' . htmlentities($authorizeUrl) . '">Login with Google</a>' . "\n";

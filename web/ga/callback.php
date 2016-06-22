@@ -6,15 +6,14 @@ $code = isset($_GET['code']) ? $_GET['code'] : '';
 
 if ($code) {
 
-    $request = $authClient->post('token', null, array (
+    $response = $authClient->post('token', ['form_params' => [
         'code' => $code,
         'client_id' => $config['client_id'],
         'client_secret' => $config['client_secret'],
         'redirect_uri' => $config['redirect_uri'],
         'grant_type' => 'authorization_code',
-    ));
-    $response = $request->send();
-    $json = $response->json();
+    ]]);
+    $json = json_decode($response->getBody(), true);
 
     file_put_contents($config['token_file'], $response->getBody());
 

@@ -2,22 +2,6 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-class HarvestQueryStringAggregator implements Guzzle\Http\QueryAggregator\QueryAggregatorInterface
-{
-    public function aggregate($key, $value, Guzzle\Http\QueryString $query)
-    {
-        $key .= '[]';
-
-        if ($query->isUrlEncoding()) {
-            return array($query->encodeValue($key) => array_map(array($query, 'encodeValue'), $value));
-        } else {
-            return array($key => $value);
-        }
-
-        return $ret;
-    }
-}
-
 $config = require __DIR__ . '/config.php';
 
 $config['server_url'] = 'http://';
@@ -32,21 +16,16 @@ if (isset($_SERVER['PHP_AUTH_USER'])) {
 $config['server_url'] .= $_SERVER['HTTP_HOST'];
 $config['server_url'] .= dirname($_SERVER['SCRIPT_NAME']);
 
-$client = new Guzzle\Http\Client('https://api.newrelic.com/v2');
+$client = new GuzzleHttp\Client(['base_uri' => 'https://api.newrelic.com/v2/']);
 
 
 $from = date('c', strtotime('-5 hours'));
 
-$request = $client->get('applications/' . $config['application_id'] . '/metrics/data.json', array(
+$response = $client->get('applications/' . $config['application_id'] . '/metrics/data.json', ['headers' => [
     'X-Api-Key' => $config['api_key'],
-));
-$query = $request->getQuery();
-$query->setAggregator(new HarvestQueryStringAggregator());
-$query->set('from', $from);
-$query->set('names', array('Apdex', 'WebTransaction', 'External/all'));
-$response = $request->send();
+], 'query' => 'from=' . $from . '&names[]=Apdex' . '&names[]=WebTransaction' . '&names[]=External/all']);
 
-$metricDataJson = $response->json();
+$metricDataJson = json_decode($response->getBody(), true);
 
 $responseTime = array();
 $requests = array();

@@ -4,14 +4,13 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 $config = require __DIR__ . '/config.php';
 
-$client = new Guzzle\Http\Client('https://www.codeship.io/api/v1');
+$client = new GuzzleHttp\Client(['base_uri' => 'https://codeship.com/api/v1/']);
 
-$request = $client->get('projects.json');
-$query = $request->getQuery();
-$query->set('api_key', $config['codeship_api_key']);
-$response = $request->send();
+$response = $client->get('projects.json', ['query' => [
+    'api_key' => $config['codeship_api_key']
+]]);
 
-$json = $response->json();
+$json = json_decode($response->getBody(), true);
 
 $branch = isset($_GET['branch']) ? $_GET['branch'] : 'master';
 
