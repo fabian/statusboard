@@ -1,12 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
-$config = require __DIR__ . '/config.php';
+$config = require __DIR__.'/config.php';
 
-$projects = array();
+$projects = [];
 foreach ($config['cc_urls'] as $url) {
-
     $xml = simplexml_load_file($url);
     foreach ($xml->Project as $project) {
         $projects[] = $project;

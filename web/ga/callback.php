@@ -1,17 +1,16 @@
 <?php
 
-require_once __DIR__ . '/ga.php';
+require_once __DIR__.'/ga.php';
 
 $code = isset($_GET['code']) ? $_GET['code'] : '';
 
 if ($code) {
-
     $response = $authClient->post('token', ['form_params' => [
-        'code' => $code,
-        'client_id' => $config['client_id'],
+        'code'          => $code,
+        'client_id'     => $config['client_id'],
         'client_secret' => $config['client_secret'],
-        'redirect_uri' => $config['redirect_uri'],
-        'grant_type' => 'authorization_code',
+        'redirect_uri'  => $config['redirect_uri'],
+        'grant_type'    => 'authorization_code',
     ]]);
     $json = json_decode($response->getBody(), true);
 
@@ -22,4 +21,4 @@ if ($code) {
     }
 }
 
-header('Location: ' . dirname($_SERVER['SCRIPT_NAME']));
+header('Location: '.dirname($_SERVER['SCRIPT_NAME']));
