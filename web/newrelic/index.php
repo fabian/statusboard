@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
-$config = require __DIR__ . '/config.php';
+$config = require __DIR__.'/config.php';
 
 $config['server_url'] = 'http://';
 if (isset($_SERVER['PHP_AUTH_USER'])) {
@@ -21,25 +21,23 @@ $client = new GuzzleHttp\Client(['base_uri' => 'https://api.newrelic.com/v2/']);
 
 $from = date('c', strtotime('-5 hours'));
 
-$response = $client->get('applications/' . $config['application_id'] . '/metrics/data.json', ['headers' => [
+$response = $client->get('applications/'.$config['application_id'].'/metrics/data.json', ['headers' => [
     'X-Api-Key' => $config['api_key'],
-], 'query' => 'from=' . $from . '&names[]=Apdex' . '&names[]=WebTransaction' . '&names[]=External/all']);
+], 'query' => 'from='.$from.'&names[]=Apdex'.'&names[]=WebTransaction'.'&names[]=External/all']);
 
 $metricDataJson = json_decode($response->getBody(), true);
 
-$responseTime = array();
-$requests = array();
-$apdex = array();
-$external = array();
+$responseTime = [];
+$requests = [];
+$apdex = [];
+$external = [];
 foreach ($metricDataJson['metric_data']['metrics'] as $metricsJson) {
-
     foreach ($metricsJson['timeslices'] as $timesliceJson) {
-
         if ($metricsJson['name'] == 'WebTransaction') {
-            $responseTime[] = array(
+            $responseTime[] = [
                 'title' => date('H:i', strtotime($timesliceJson['to'])),
                 'value' => $timesliceJson['values']['average_response_time'] / 1000,
-            );
+            ];
             /*
             $requests[] = array(
                 'title' => date('H:i', strtotime($timesliceJson['to'])),
@@ -49,44 +47,44 @@ foreach ($metricDataJson['metric_data']['metrics'] as $metricsJson) {
         }
 
         if ($metricsJson['name'] == 'Apdex') {
-            $apdex[] = array(
+            $apdex[] = [
                 'title' => date('H:i', strtotime($timesliceJson['to'])),
                 'value' => $timesliceJson['values']['value'] * 10,
-            );
+            ];
         }
 
         if ($metricsJson['name'] == 'External/all') {
-            $external[] = array(
+            $external[] = [
                 'title' => date('H:i', strtotime($timesliceJson['to'])),
                 'value' => $timesliceJson['values']['average_response_time'] / 1000,
-            );
+            ];
         }
     }
 }
 
-$graphJson = array(
-    'graph' => array(
+$graphJson = [
+    'graph' => [
         'title' => 'New Relic',
-        'type' => 'line',
-        'yAxis' => array(
-        ),
+        'type'  => 'line',
+        'yAxis' => [
+        ],
         'refreshEveryNSeconds' => 15,
-        'datasequences' => array(
-            array(
-                'title' => 'Apdex',
-                'color' => 'purple',
+        'datasequences'        => [
+            [
+                'title'      => 'Apdex',
+                'color'      => 'purple',
                 'datapoints' => $apdex,
-            ),
-            array(
-                'title' => 'Response',
-                'color' => 'green',
+            ],
+            [
+                'title'      => 'Response',
+                'color'      => 'green',
                 'datapoints' => $responseTime,
-            ),
-            array(
-                'title' => 'External',
-                'color' => 'yellow',
+            ],
+            [
+                'title'      => 'External',
+                'color'      => 'yellow',
                 'datapoints' => $external,
-            ),
+            ],
             /*
             array(
                 'title' => 'Requests',
@@ -94,13 +92,13 @@ $graphJson = array(
                 'datapoints' => $requests,
             ),
             */
-        ),
-    ),
-);
+        ],
+    ],
+];
 
-file_put_contents(__DIR__ . '/data.json', json_encode($graphJson));
+file_put_contents(__DIR__.'/data.json', json_encode($graphJson));
 
-$grapUrl = $config['server_url'] . '/data.json';
+$grapUrl = $config['server_url'].'/data.json';
 
 ?>
 

@@ -1,13 +1,13 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
-$config = require __DIR__ . '/config.php';
+$config = require __DIR__.'/config.php';
 
 $client = new GuzzleHttp\Client(['base_uri' => 'https://codeship.com/api/v1/']);
 
 $response = $client->get('projects.json', ['query' => [
-    'api_key' => $config['codeship_api_key']
+    'api_key' => $config['codeship_api_key'],
 ]]);
 
 $json = json_decode($response->getBody(), true);
@@ -17,27 +17,23 @@ $branch = isset($_GET['branch']) ? $_GET['branch'] : 'master';
 $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Projects />');
 
 foreach ($json['projects'] as $project) {
-
     $name = $project['repository_name'];
     $activity = 'Sleeping';
     $lastBuildStatus = null;
     $lastBuildLabel = null;
-    $webUrl = 'https://www.codeship.io/projects/' . $project['id'];
+    $webUrl = 'https://www.codeship.io/projects/'.$project['id'];
 
     if ($branch != 'master') {
-        $name .= ' ' . $branch;
+        $name .= ' '.$branch;
     }
 
     foreach ($project['builds'] as $build) {
-
         if ($build['branch'] == $branch) {
-
             if ($lastBuildStatus === null) {
                 $lastBuildStatus = 'Unknown';
             }
 
             if ($lastBuildStatus === 'Unknown') {
-
                 if ($build['status'] == 'success') {
                     $lastBuildStatus = 'Success';
                     $lastBuildLabel = $build['id'];
@@ -56,7 +52,6 @@ foreach ($json['projects'] as $project) {
     }
 
     if ($lastBuildStatus !== null) {
-
         $projectXML = $xml->addChild('Project');
         $projectXML->addAttribute('name', $name);
         $projectXML->addAttribute('activity', $activity);
