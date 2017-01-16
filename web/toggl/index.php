@@ -11,13 +11,13 @@ $until = date('Y-m-d', strtotime('last sunday +5 days', strtotime('tomorrow')));
 
 $hours = [];
 $response = $client->get('weekly', [
-    'auth' => [$config['api_token'], 'api_token'],
+    'auth'  => [$config['api_token'], 'api_token'],
     'query' => [
-        'user_agent' => 'Statusboard',
+        'user_agent'   => 'Statusboard',
         'workspace_id' => $config['workspace_id'],
-        'since' => $since,
-        'until' => $until,
-    ]
+        'since'        => $since,
+        'until'        => $until,
+    ],
 ]);
 
 $reportJson = json_decode($response->getBody(), true);
@@ -116,4 +116,3 @@ $graphJson = [
 ];
 
 file_put_contents(__DIR__.'/data.json', json_encode($graphJson));
-

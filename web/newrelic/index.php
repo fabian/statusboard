@@ -18,7 +18,6 @@ $config['server_url'] .= dirname($_SERVER['SCRIPT_NAME']);
 
 $client = new GuzzleHttp\Client(['base_uri' => 'https://api.newrelic.com/v2/']);
 
-
 $from = date('c', strtotime('-5 hours'));
 
 $response = $client->get('applications/'.$config['application_id'].'/metrics/data.json', ['headers' => [
