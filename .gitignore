@@ -9,6 +9,9 @@
 /web/newrelic/data.json
 /web/newrelic/config.php
 
+/web/toggl/data.json
+/web/toggl/config.php
+
 /web/ga/data.json
 /web/ga/config.php
 
