@@ -14,10 +14,10 @@ foreach ($config['cc_urls'] as $url) {
 
 ?>
 <table>
-    <?php foreach ($projects as $project): ?>
+    <?php foreach ($projects as $project) { ?>
         <tr>
             <td><?php echo htmlentities($project['name']); ?></td>
             <td style="width: 10px; background-color: <?php echo $project['lastBuildStatus'] == 'Success' ? 'rgb(0, 186, 0)' : 'rgb(255, 48, 0)'; ?>">&nbsp;</td>
         </tr>
-    <?php endforeach; ?>
+    <?php } ?>
 </table>
